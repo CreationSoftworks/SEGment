@@ -21,6 +21,11 @@ public class ComponentEngine {
 	// a list of all objects currently in the engine
 	private static List<BaseObject> objects = new ArrayList<BaseObject>();
 	
+	/**
+	 * Get the identifier (unique) of a component with it's name.
+	 * @param componentName The name of the component.
+	 * @return The component identifier associated with component with name <code>componentName</code>
+	 */
 	public static long getIdentifier(String componentName) {
 		if (!componentIdentifiers.containsKey(componentName)) {
 			long uniqueID = UUID.randomUUID().getLeastSignificantBits();
@@ -31,10 +36,26 @@ public class ComponentEngine {
 		}
 	}
 	
+	/**
+	 * Register a node with the engine. <br />
+	 * This needs to be done to every node you create. Simply create an instance of
+	 * the node you have created, then call <code>ComponentEngine.registerNode(nodeInstance);</code>. <br />
+	 * It will then add the node to a cache, containing the node's dependencies as well as the instance of the node.
+	 * <b>IMPORTANT:</b> Please ensure the node is fully initialized before adding it to the engine with this.
+	 * @param node An instance of the node to register.
+	 */
 	public static void registerNode(Node node) {
 		nodeCache.put(node.dependencies, node);
 	}
 	
+	/**
+	 * Register an object with the engine. <br />
+	 * This function adds the object to a list of objects, then calculates each permutation of it's components.
+	 * After this, it checks each permutation against the cached list of dependencies for each node,
+	 * and if it finds any matches, it will create an instance of the appropriate component and add it to the
+	 * object's list of nodes.
+	 * @param object The object to add to system.
+	 */
 	public static void registerObject(BaseObject object) {
 		objects.add(object); // add to list of objects
 		
@@ -54,15 +75,24 @@ public class ComponentEngine {
 		nodes.put(object.getID(), objectNodes); // put the object into the component engine
 	}
 	
+	/**
+	 * Remove an object from the engine.
+	 * @param object The object to remove.
+	 */
 	public static void removeObject(BaseObject object) {
 		objects.remove(object);
 	}
-	// WARNING: could be slow; getObjectFromID iterates through every object in the engine
+	/**
+	 * Remove an object from the engine. <br />
+	 * <b>WARNING:</b> This could be slow, as it uses <code>Util.getObjectFromID()</code>, which needs to
+	 * iterate through every object in the system to find the correct one.
+	 * @param ID The UUID of the object to remove.
+	 */
 	public static void removeObject(long ID) {
 		objects.remove(Util.getObjectFromID(ID));
 	}
 	
-	public static String[][] checkDependencies(ArrayList<Component> components) {
+	private static String[][] checkDependencies(ArrayList<Component> components) {
 		String[][] dependencies = new String[components.size()][]; // temporary array for each Node's component dependencies
 		for (int i = 0; i < components.size(); i++) { // for each of the object's components
 			for (int j = 0; j < components.size(); i++) { // for each of the object's other components
@@ -81,6 +111,10 @@ public class ComponentEngine {
 		}
 	}
 	
+	/**
+	 * Get the list of objects currently in the engine.
+	 * @return The list of objects currently in the engine.
+	 */
 	public static List<BaseObject> objectList () {
 		return objects;
 	}

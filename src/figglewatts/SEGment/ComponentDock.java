@@ -29,10 +29,19 @@ public class ComponentDock {
 		return null;
 	}
 	
+	/**
+	 * Add a component to the dock.
+	 * @param component The component to add.
+	 * @throws Exception
+	 */
 	public void add(Component component) throws Exception {
 		this.componentList.add(component);
 	}
 	
+	/**
+	 * Get the components (<code>BaseComponent</code>) in the dock as an <code>ArrayList</code>.
+	 * @return Components in dock.
+	 */
 	public ArrayList<Component> list() {
 		return (ArrayList<Component>)componentList;
 	}
