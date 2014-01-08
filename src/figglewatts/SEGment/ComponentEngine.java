@@ -54,6 +54,14 @@ public class ComponentEngine {
 		nodes.put(object.getID(), objectNodes); // put the object into the component engine
 	}
 	
+	public static void removeObject(BaseObject object) {
+		objects.remove(object);
+	}
+	// WARNING: could be slow; getObjectFromID iterates through every object in the engine
+	public static void removeObject(long ID) {
+		objects.remove(Util.getObjectFromID(ID));
+	}
+	
 	public static String[][] checkDependencies(ArrayList<Component> components) {
 		String[][] dependencies = new String[components.size()][]; // temporary array for each Node's component dependencies
 		for (int i = 0; i < components.size(); i++) { // for each of the object's components
@@ -71,5 +79,9 @@ public class ComponentEngine {
 		} else {
 			return null;
 		}
+	}
+	
+	public static List<BaseObject> objectList () {
+		return objects;
 	}
 }
