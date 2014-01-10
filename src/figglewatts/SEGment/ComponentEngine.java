@@ -102,6 +102,7 @@ public class ComponentEngine {
 		DependencyList dependencies = new DependencyList();
 		for (int i = 0; i < components.size(); i++) { // for each of the object's components
 			ArrayList<String> subDependencies = new ArrayList<String>();
+			subDependencies.add(components.get(i).getName()); // add current component to list
 			for (int j = 0; j < components.size(); i++) { // for each of the object's other components
 				if (components.get(i) == components.get(j)) { // if the component in this loop is the same as that of the outer loop
 					continue; // go to the next iteration, because we can't check to see if it depends on itself
