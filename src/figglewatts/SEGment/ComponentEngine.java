@@ -21,6 +21,8 @@ public class ComponentEngine {
 	// a list of all objects currently in the engine
 	private static List<BaseObject> objects = new ArrayList<BaseObject>();
 	
+	private static List<ISystem> systems = new ArrayList<ISystem>();
+	
 	/**
 	 * Get the identifier (unique) of a component with it's name.
 	 * @param componentName The name of the component.
@@ -83,6 +85,16 @@ public class ComponentEngine {
 		nodes.put(object.getID(), objectNodes); // add the object's nodes into the engine
 	}
 	
+	public static void addSystem(ISystem system) {
+		systems.add(system);
+		system.start();
+	}
+	
+	public static void removeSystem(ISystem system) {
+		systems.remove(system);
+		system.end();
+	}
+	
 	/**
 	 * Remove an object from the engine.
 	 * @param object The object to remove.
@@ -106,5 +118,11 @@ public class ComponentEngine {
 	 */
 	public static List<BaseObject> objectList () {
 		return objects;
+	}
+	
+	public void update(double delta) {
+		for (ISystem system : systems) {
+			system.update(delta);
+		}
 	}
 }
