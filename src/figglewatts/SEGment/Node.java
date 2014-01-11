@@ -14,4 +14,22 @@ public class Node {
 	public Node Instance() {
 		return this;
 	}
+	/**
+	 * Get an instance of this with the components specified attatched to it.
+	 * @param componentArray The components to attatch.
+	 * @return The instance with attatched components.
+	 */
+	public Node Instance(Component[] componentArray) {
+		Node instance = this.Instance();
+		for (Component component : componentArray) {
+			instance.components.add(component);
+		}
+		return instance;
+	}
+	
+	public Node(Component[] componentArray) {
+		for (Component component : componentArray) {
+			this.components.add(component);
+		}
+	}
 }
