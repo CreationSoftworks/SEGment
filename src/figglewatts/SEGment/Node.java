@@ -7,6 +7,12 @@ public class Node {
 	public String[] dependencies; // put the names of any components that this depends on here (e.g. "Position", and "Display")
 	public List<Component> components = new ArrayList<Component>();
 	
+	private String name;
+	
+	public String getName() {
+		return name;
+	}
+
 	public String[] getDependencies() {
 		return this.dependencies;
 	}
@@ -31,7 +37,8 @@ public class Node {
 		return instance;
 	}
 	
-	public Node(Component... componentArguments) {
+	public Node(String name, Component... componentArguments) {
+		this.name = name;
 		for (Component component : componentArguments) {
 			this.components.add(component);
 		}
