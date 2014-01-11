@@ -13,7 +13,7 @@ public class ComponentEngine {
 	public static Map<String, Long> componentIdentifiers = new HashMap<String, Long>();
 	
 	// a store of all nodes in the engine, used when deciding what nodes an object has
-	private static Map<Node, String[]> nodeCache = new HashMap<Node, String[]>();
+	private static Map<String[], Node> nodeCache = new HashMap<String[], Node>();
 	
 	// this relates object IDs to lists of nodes, used when getting nodes associated with an object
 	private static Map<Long, NodeList> nodes = new HashMap<Long, NodeList>();
@@ -42,6 +42,10 @@ public class ComponentEngine {
 		return nodes.get(UUID);
 	}
 	
+	public static Node getNodeFromCache (String[] dependencies) {
+		return nodeCache.get(dependencies);
+	}
+	
 	/**
 	 * Register a node with the engine. <br />
 	 * This needs to be done to every node you create. Simply create an instance of
@@ -51,7 +55,7 @@ public class ComponentEngine {
 	 * @param node An instance of the node to register.
 	 */
 	public static void registerNode(Node node) {
-		nodeCache.put(node, node.dependencies);
+		nodeCache.put(node.dependencies, node);
 	}
 	
 	/**
@@ -68,7 +72,7 @@ public class ComponentEngine {
 		NodeList objectNodes = new NodeList(); // create instance of nodelist to store this object's nodes in
 		
 		// for each node cached in the engine
-		for (Node node : nodeCache.keySet()) {
+		for (Node node : nodeCache.values()) {
 			// create a temporary list of components to attatch to the node, if it's appropriate for the object
 			ArrayList<Component> componentsToAttatch = new ArrayList<Component>();
 			// for each of this node's dependencies
