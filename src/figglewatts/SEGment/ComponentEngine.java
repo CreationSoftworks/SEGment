@@ -38,6 +38,10 @@ public class ComponentEngine {
 		}
 	}
 	
+	public static NodeList getNodeList (long UUID) {
+		return nodes.get(UUID);
+	}
+	
 	/**
 	 * Register a node with the engine. <br />
 	 * This needs to be done to every node you create. Simply create an instance of
