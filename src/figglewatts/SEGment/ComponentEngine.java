@@ -54,6 +54,18 @@ public class ComponentEngine {
 		}
 	}
 	
+	public static Node[] getNodes (String name) {
+		ArrayList<Node> nodesToReturn = new ArrayList<Node>();
+		for (NodeList list : nodes.values()) {
+			for (Node node : list.nodes) {
+				if (node.getName() == name) {
+					nodesToReturn.add(node);
+				}
+			}
+		}
+		return (Node[])nodesToReturn.toArray();
+	}
+	
 	/**
 	 * Register a node with the engine. <br />
 	 * This needs to be done to every node you create. Simply create an instance of
