@@ -46,6 +46,14 @@ public class ComponentEngine {
 		return nodeCache.get(dependencies);
 	}
 	
+	public static boolean cacheHasNode (String[] dependencies) {
+		if (getNodeFromCache(dependencies) != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * Register a node with the engine. <br />
 	 * This needs to be done to every node you create. Simply create an instance of
