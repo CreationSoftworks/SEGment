@@ -13,7 +13,7 @@ public class ComponentEngine {
 	public static Map<String, Long> componentIdentifiers = new HashMap<String, Long>();
 	
 	// a store of all nodes in the engine, used when deciding what nodes an object has
-	private static Map<String[], Node> nodeCache = new HashMap<String[], Node>();
+	private static Map<Node, String[]> nodeCache = new HashMap<Node, String[]>();
 	
 	// this relates object IDs to lists of nodes, used when getting nodes associated with an object
 	private static Map<Long, NodeList> nodes = new HashMap<Long, NodeList>();
@@ -45,7 +45,7 @@ public class ComponentEngine {
 	 * @param node An instance of the node to register.
 	 */
 	public static void registerNode(Node node) {
-		nodeCache.put(node.dependencies, node);
+		nodeCache.put(node, node.dependencies);
 	}
 	
 	/**
@@ -60,17 +60,21 @@ public class ComponentEngine {
 		objects.add(object); // add to list of objects
 		
 		NodeList objectNodes = new NodeList(); // create instance of nodelist to store this object's nodes in
-		String[][] dependencies = checkDependencies(object.components.list()); // get 2D array of component names
-		int j = 0;
-		for (int i = 0; i < object.components.list().size(); i++) { // for every component attatched to object
-			while (dependencies[i][j] != null) { // while the next dependency is not null
-				for (String[] dependency : nodeCache.keySet()) { // for every dependency cached in nodeCache
-					if (dependencies[i] == dependency) { // if generated dependencies match cached dependency
-						objectNodes.nodes.add(nodeCache.get(dependency).Instance()); // add an instance of appropriate node to NodeList
+		
+		for (Node node : nodeCache.keySet()) {
+			ArrayList<Component> componentsToAttatch = new ArrayList<Component>();
+			for (int i = 0; i < node.dependencies.length; i++) {
+				if (!object.hasComponent(node.dependencies[i])) {
+					break;
+				} else {
+					componentsToAttatch.add(object.getComponent(node.dependencies[i]));
+					if (i != node.dependencies.length-1) {
+						continue;
 					}
 				}
+				// object has necessary components for this node! Create it!
+				objectNodes.nodes.add(node.Instance((Component[])componentsToAttatch.toArray()));
 			}
-			j++; // go to next index of 2nd dimension in dependency 2D array
 		}
 		nodes.put(object.getID(), objectNodes); // put the object into the component engine
 	}
