@@ -50,33 +50,37 @@ public class ComponentEngine {
 	
 	/**
 	 * Register an object with the engine. <br />
-	 * This function adds the object to a list of objects, then calculates each permutation of it's components.
-	 * After this, it checks each permutation against the cached list of dependencies for each node,
-	 * and if it finds any matches, it will create an instance of the appropriate node and add it to the
-	 * object's list of nodes.
-	 * @param object The object to add to system.
+	 * This function adds the object to a list of objects, then goes through each node
+	 * cached in the system and checks the node's dependencies against the object's components.
+	 * If it finds a match, then it creates an instance of that node with the object's components
+	 * attatched to it. Finally, it then adds the object's nodes to the engine.
+	 * @param object The object to add to the engine.
 	 */
 	public static void registerObject(BaseObject object) {
-		objects.add(object); // add to list of objects
+		objects.add(object); // add to list of objects in engine
 		
 		NodeList objectNodes = new NodeList(); // create instance of nodelist to store this object's nodes in
 		
+		// for each node cached in the engine
 		for (Node node : nodeCache.keySet()) {
+			// create a temporary list of components to attatch to the node, if it's appropriate for the object
 			ArrayList<Component> componentsToAttatch = new ArrayList<Component>();
+			// for each of this node's dependencies
 			for (int i = 0; i < node.dependencies.length; i++) {
-				if (!object.hasComponent(node.dependencies[i])) {
-					break;
-				} else {
+				if (!object.hasComponent(node.dependencies[i])) { // if object doesn't have this dependency
+					break; // we don't want to make this node
+				} else { // if it does have this dependency
+					// add this component to the list of components to attatch
 					componentsToAttatch.add(object.getComponent(node.dependencies[i]));
-					if (i != node.dependencies.length-1) {
-						continue;
+					if (i != node.dependencies.length-1) { // if we're not at the last iteration
+						continue; // go to the next iteration
 					}
 				}
 				// object has necessary components for this node! Create it!
 				objectNodes.nodes.add(node.Instance((Component[])componentsToAttatch.toArray()));
 			}
 		}
-		nodes.put(object.getID(), objectNodes); // put the object into the component engine
+		nodes.put(object.getID(), objectNodes); // add the object's nodes into the engine
 	}
 	
 	/**
@@ -94,34 +98,6 @@ public class ComponentEngine {
 	 */
 	public static void removeObject(long ID) {
 		objects.remove(Util.getObjectFromID(ID));
-	}
-	
-	/**
-	 * Javadoc not required due to it not being exposed to the users. <br />
-	 * /sunglasses /thuglyfe
-	 * @param components
-	 * @return
-	 */
-	private static DependencyList checkDependencies(ArrayList<Component> components) {
-		DependencyList dependencies = new DependencyList();
-		for (int i = 0; i < components.size(); i++) { // for each of the object's components
-			ArrayList<String> subDependencies = new ArrayList<String>();
-			subDependencies.add(components.get(i).getName()); // add current component to list
-			for (int j = 0; j < components.size(); i++) { // for each of the object's other components
-				if (components.get(i) == components.get(j)) { // if the component in this loop is the same as that of the outer loop
-					continue; // go to the next iteration, because we can't check to see if it depends on itself
-				} else {
-					// put the name of the component in the 2D array
-					subDependencies.add(components.get(j).getName());
-				}
-			}
-			dependencies.dependencies.add(subDependencies);
-		}
-		if (dependencies.dependencies.isEmpty()) { // if we have found dependencies (which we should have!)
-			return dependencies;
-		} else {
-			return null;
-		}
 	}
 	
 	/**
