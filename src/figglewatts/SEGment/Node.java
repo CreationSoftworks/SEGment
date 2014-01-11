@@ -27,8 +27,8 @@ public class Node {
 		return instance;
 	}
 	
-	public Node(Component[] componentArray) {
-		for (Component component : componentArray) {
+	public Node(Component... componentArguments) {
+		for (Component component : componentArguments) {
 			this.components.add(component);
 		}
 	}
