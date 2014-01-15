@@ -34,7 +34,7 @@ public class ComponentDock {
 	 * @param component The component to add.
 	 * @throws Exception
 	 */
-	public void add(Component component) throws Exception {
+	public void add(Component component) {
 		this.componentList.add(component);
 	}
 	

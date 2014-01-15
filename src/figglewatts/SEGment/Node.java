@@ -1,11 +1,8 @@
 package figglewatts.SEGment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Node {
 	public String[] dependencies; // put the names of any components that this depends on here (e.g. "Position", and "Display")
-	public List<Component> components = new ArrayList<Component>();
+	public ComponentDock components = new ComponentDock();
 	
 	private String name;
 	
@@ -37,6 +34,9 @@ public class Node {
 		return instance;
 	}
 	
+	public Node(String name) {
+		this.name = name;
+	}
 	public Node(String name, Component... componentArguments) {
 		this.name = name;
 		for (Component component : componentArguments) {
