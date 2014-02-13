@@ -63,7 +63,7 @@ public class ComponentEngine {
 				}
 			}
 		}
-		return (Node[])nodesToReturn.toArray();
+		return nodesToReturn.toArray(new Node[nodesToReturn.size()]);
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class ComponentEngine {
 					}
 				}
 				// object has necessary components for this node! Create it!
-				objectNodes.nodes.add(node.Instance((Component[])componentsToAttatch.toArray()));
+				objectNodes.nodes.add(node.Instance(componentsToAttatch.toArray(new Component[componentsToAttatch.size()])));
 			}
 		}
 		nodes.put(object.getID(), objectNodes); // add the object's nodes into the engine
