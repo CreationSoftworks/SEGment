@@ -1,6 +1,9 @@
-SEGment
+![SEGment](/img/logo.png)
+
 =======
 
-Spirit Engine GameObject management
+SEGment is a Component-Entity system written in Java specifically for the (currently unwritten) Spirit Engine.
 
-LOGO COMING SOON
+Will write documentation soon, for now see Javadocs.
+
+-![Figglewatts](http://github.com/Figglewatts)
